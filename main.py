@@ -3,10 +3,11 @@ from core.database import get_connection
 
 CAMINHO_CREDENCIAL = "credentials/estoque-minimo-acess-0fc284ebb331.json"
 
-SPREADSHEET_ID = "1KTwTGhmgD5qhBZk9rKAY18ju-GiEWv2wpRN7TF2ahbU"
+SPREADSHEET_ID = "1zoFp4zCqsN6GtvTgrte4620HoWymO_hnB2juuEyeQ54"
 
 COLUNA_CODIGO = 2
- 
+
+MODO_TESTE = False
 
 def conectar_google_sheets():
     cliente = gspread.service_account(
@@ -17,28 +18,56 @@ def conectar_google_sheets():
 
     return planilha
 
-
 def extrair_codigos(planilha):
+
     codigos = []
 
     abas = planilha.worksheets()
 
     for aba in abas:
+
         print(f"Processando aba: {aba.title}")
 
         dados = aba.get_all_values()
 
-        for linha in dados[1:]:
+        quantidade_aba = 0
+
+        for numero_linha, linha in enumerate(dados[1:], start=2):
+
             if len(linha) >= COLUNA_CODIGO:
+
                 codigo = linha[COLUNA_CODIGO - 1].strip()
 
                 if codigo:
+
                     codigos.append({
                         "aba": aba.title,
+                        "linha": numero_linha,
                         "codigo": codigo
                     })
 
+                    quantidade_aba += 1
+
+        print(
+            f"  → {quantidade_aba} códigos encontrados"
+        )
+
     return codigos
+
+def atualizar_estoque_linha(aba, linha, dados_estoque):
+
+    valores = [[
+        dados_estoque["FOZ DO IGUACU"],
+        dados_estoque["UMUARAMA"],
+        dados_estoque["TOLEDO"],
+        dados_estoque["CASCAVEL"],
+        sum(dados_estoque.values())
+    ]]
+
+    aba.update(
+        range_name=f"E{linha}:I{linha}",
+        values=valores
+    )
 
 def consultar_estoque(codigos):
 
@@ -100,38 +129,185 @@ def consultar_estoque(codigos):
 
     return resultados
 
-def main():
-    
-    planilha = conectar_google_sheets()
-    """
-    print(f"Planilha conectada: {planilha.title}\n")
+def organizar_estoque(resultados):
 
-    codigos = extrair_codigos(planilha)
-
-    print(f"\nTotal de códigos encontrados: {len(codigos)}")
-
-    for item in codigos:
-        print(
-            f"Aba: {item['aba']} | "
-            f"Código: {item['codigo']}"
-        )
-    """
-    codigos = extrair_codigos(planilha)
-    codigos_unicos = sorted(
-        set(item["codigo"] for item in codigos)
-    )
-    print("Consultando códigos:\n")
-
-    resultados = consultar_estoque(codigos_unicos)
+    estoque = {}
 
     for codigo, cidade, quantidade in resultados:
 
-        print(
-            f"{codigo} | "
-            f"{cidade} | "
-            f"{quantidade}"
+        if codigo not in estoque:
+            estoque[codigo] = {
+                "FOZ DO IGUACU": 0,
+                "UMUARAMA": 0,
+                "TOLEDO": 0,
+                "CASCAVEL": 0
+            }
+
+        cidade = cidade.strip().upper()
+
+        if cidade in estoque[codigo]:
+            estoque[codigo][cidade] += quantidade
+
+    return estoque
+
+def preparar_atualizacoes(codigos_planilha, estoque):
+
+    atualizacoes = {}
+
+    for item in codigos_planilha:
+
+        aba = item["aba"]
+        linha = item["linha"]
+        codigo = item["codigo"]
+
+        dados_estoque = estoque.get(
+            codigo,
+            {
+                "FOZ DO IGUACU": 0,
+                "UMUARAMA": 0,
+                "TOLEDO": 0,
+                "CASCAVEL": 0
+            }
         )
 
+        total = sum(dados_estoque.values())
+
+        valores = [
+            dados_estoque["FOZ DO IGUACU"],
+            dados_estoque["UMUARAMA"],
+            dados_estoque["TOLEDO"],
+            dados_estoque["CASCAVEL"],
+            total
+        ]
+
+        if aba not in atualizacoes:
+            atualizacoes[aba] = []
+
+        atualizacoes[aba].append({
+            "linha": linha,
+            "codigo": codigo,
+            "valores": valores
+        })
+
+    return atualizacoes
+
+def atualizar_planilha(planilha, atualizacoes):
+
+    for nome_aba, itens in atualizacoes.items():
+
+        aba = planilha.worksheet(nome_aba)
+
+        print(f"\nAtualizando aba: {nome_aba}")
+
+        operacoes = []
+
+        for item in itens:
+
+            linha = item["linha"]
+            valores = item["valores"]
+
+            operacoes.append({
+                "range": f"E{linha}:I{linha}",
+                "values": [valores]
+            })
+
+        if MODO_TESTE:
+
+            print(
+                f"  MODO TESTE: "
+                f"{len(operacoes)} linhas seriam atualizadas"
+            )
+
+        else:
+
+            aba.batch_update(operacoes)
+
+            print(
+                f"  ✓ {len(operacoes)} linhas atualizadas"
+            )
+
+def main():
+
+    # ==============================
+    # GOOGLE SHEETS
+    # ==============================
+
+    planilha = conectar_google_sheets()
+
+    print(f"\nPlanilha: {planilha.title}\n")
+
+    codigos_planilha = extrair_codigos(planilha)
+
+    print("\n==============================")
+    print("GOOGLE SHEETS")
+    print("==============================")
+
+    print(
+        f"Registros encontrados: "
+        f"{len(codigos_planilha)}"
+    )
+
+
+    # ==============================
+    # CÓDIGOS ÚNICOS
+    # ==============================
+
+    codigos_unicos = sorted(
+        set(
+            item["codigo"]
+            for item in codigos_planilha
+        )
+    )
+
+    print(
+        f"Códigos únicos: "
+        f"{len(codigos_unicos)}"
+    )
+
+
+    # ==============================
+    # ORACLE
+    # ==============================
+
+    print("\nConsultando Oracle...")
+
+    resultados = consultar_estoque(
+        codigos_unicos
+    )
+
+    print(
+        f"Registros retornados pelo Oracle: "
+        f"{len(resultados)}"
+    )
+
+
+    # ==============================
+    # ORGANIZAR ESTOQUE
+    # ==============================
+
+    estoque = organizar_estoque(
+        resultados
+    )
+
+
+    # ==============================
+    # PREPARAR ATUALIZAÇÕES
+    # ==============================
+
+    atualizacoes = preparar_atualizacoes(
+        codigos_planilha,
+        estoque
+    )
+
+
+    # ==============================
+    # ATUALIZAR PLANILHA
+    # ==============================
+
+    atualizar_planilha(
+        planilha,
+        atualizacoes
+    )
 
 if __name__ == "__main__":
     main()
