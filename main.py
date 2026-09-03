@@ -1,13 +1,23 @@
-import gspread
+import gspread, os
 from core.database import get_connection
+from core.logger import criar_logger
 
-CAMINHO_CREDENCIAL = "credentials/estoque-minimo-acess-0fc284ebb331.json"
+CAMINHO_CREDENCIAL = os.getenv(
+    "CAMINHO_CREDENCIAL_CONTA_SERVICO"
+)
 
-SPREADSHEET_ID = "1zoFp4zCqsN6GtvTgrte4620HoWymO_hnB2juuEyeQ54"
+SPREADSHEET_ID = os.getenv(
+    "SPREADSHEET_ID"
+)
 
 COLUNA_CODIGO = 2
 
 MODO_TESTE = False
+
+logger = criar_logger(
+    "atualizador",
+    "atualizacoes.log"
+)
 
 def conectar_google_sheets():
     cliente = gspread.service_account(
@@ -227,87 +237,110 @@ def atualizar_planilha(planilha, atualizacoes):
             )
 
 def main():
+    logger.info("========================================")
+    logger.info("INICIANDO ATUALIZAÇÃO DE ESTOQUE")
+    logger.info("========================================")
 
-    # ==============================
-    # GOOGLE SHEETS
-    # ==============================
+    try:
+        # ==============================
+            # GOOGLE SHEETS
+            # ==============================
+        
+            planilha = conectar_google_sheets()
+        
+            print(f"\nPlanilha: {planilha.title}\n")
+        
+            codigos_planilha = extrair_codigos(planilha)
 
-    planilha = conectar_google_sheets()
+            logger.info(
+            f"Registros encontrados na planilha: "
+            f"{len(codigos_planilha)}"
+            )
 
-    print(f"\nPlanilha: {planilha.title}\n")
-
-    codigos_planilha = extrair_codigos(planilha)
-
-    print("\n==============================")
-    print("GOOGLE SHEETS")
-    print("==============================")
-
-    print(
-        f"Registros encontrados: "
-        f"{len(codigos_planilha)}"
-    )
-
-
-    # ==============================
-    # CÓDIGOS ÚNICOS
-    # ==============================
-
-    codigos_unicos = sorted(
-        set(
-            item["codigo"]
-            for item in codigos_planilha
+            print("\n==============================")
+            print("GOOGLE SHEETS")
+            print("==============================")
+        
+            print(
+                f"Registros encontrados: "
+                f"{len(codigos_planilha)}"
+            )
+        
+        
+            # ==============================
+            # CÓDIGOS ÚNICOS
+            # ==============================
+        
+            codigos_unicos = sorted(
+                set(
+                    item["codigo"]
+                    for item in codigos_planilha
+                )
+            )
+            logger.info(
+            f"Códigos únicos: "
+            f"{len(codigos_unicos)}"
+            )
+            print(
+                f"Códigos únicos: "
+                f"{len(codigos_unicos)}"
+            )
+        
+        
+            # ==============================
+            # ORACLE
+            # ==============================
+        
+            print("\nConsultando Oracle...")
+        
+            resultados = consultar_estoque(
+                codigos_unicos
+            )
+        
+            print(
+                f"Registros retornados pelo Oracle: "
+                f"{len(resultados)}"
+            )
+            logger.info(
+            f"Registros retornados pelo Oracle: "
+            f"{len(resultados)}"
+            )
+        
+            # ==============================
+            # ORGANIZAR ESTOQUE
+            # ==============================
+        
+            estoque = organizar_estoque(
+                resultados
+            )
+        
+        
+            # ==============================
+            # PREPARAR ATUALIZAÇÕES
+            # ==============================
+        
+            atualizacoes = preparar_atualizacoes(
+                codigos_planilha,
+                estoque
+            )
+        
+        
+            # ==============================
+            # ATUALIZAR PLANILHA
+            # ==============================
+        
+            atualizar_planilha(
+                planilha,
+                atualizacoes
+            )
+            logger.info(
+            f"Linhas atualizadas: {len(atualizacoes)}"
+            )
+            logger.info("ATUALIZAÇÃO CONCLUÍDA")
+    except Exception as e:
+        print("Ocorreu um erro: ", e)
+        logger.exception(
+            "ERRO DURANTE A ATUALIZAÇÃO",e
         )
-    )
-
-    print(
-        f"Códigos únicos: "
-        f"{len(codigos_unicos)}"
-    )
-
-
-    # ==============================
-    # ORACLE
-    # ==============================
-
-    print("\nConsultando Oracle...")
-
-    resultados = consultar_estoque(
-        codigos_unicos
-    )
-
-    print(
-        f"Registros retornados pelo Oracle: "
-        f"{len(resultados)}"
-    )
-
-
-    # ==============================
-    # ORGANIZAR ESTOQUE
-    # ==============================
-
-    estoque = organizar_estoque(
-        resultados
-    )
-
-
-    # ==============================
-    # PREPARAR ATUALIZAÇÕES
-    # ==============================
-
-    atualizacoes = preparar_atualizacoes(
-        codigos_planilha,
-        estoque
-    )
-
-
-    # ==============================
-    # ATUALIZAR PLANILHA
-    # ==============================
-
-    atualizar_planilha(
-        planilha,
-        atualizacoes
-    )
-
 if __name__ == "__main__":
     main()

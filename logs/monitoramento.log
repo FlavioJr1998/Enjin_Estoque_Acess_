@@ -1,0 +1,308 @@
+2026-09-02 21:58:14 | INFO | ========================================
+2026-09-02 21:58:14 | INFO | INICIANDO MONITORAMENTO DE ESTOQUE
+2026-09-02 21:58:14 | INFO | ========================================
+2026-09-02 21:58:14 | ERROR | ERRO AO ACESSAR GOOGLE SHEETS
+Traceback (most recent call last):
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 336, in main
+    planilha = conectar_google_sheets()
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 50, in conectar_google_sheets
+    cliente = gspread.service_account(
+        filename=CAMINHO_CREDENCIAL
+    )
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\venv\Lib\site-packages\gspread\auth.py", line 329, in service_account
+    creds = SACredentials.from_service_account_file(filename, scopes=scopes)
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\venv\Lib\site-packages\google\oauth2\service_account.py", line 271, in from_service_account_file
+    info, signer = _service_account_info.from_filename(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        filename, require=["client_email", "token_uri"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\venv\Lib\site-packages\google\auth\_service_account_info.py", line 78, in from_filename
+    with io.open(filename, "r", encoding="utf-8") as json_file:
+         ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: expected str, bytes or os.PathLike object, not NoneType
+2026-09-02 21:58:18 | ERROR | Não foi possível enviar o e-mail de erro
+Traceback (most recent call last):
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 336, in main
+    planilha = conectar_google_sheets()
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 50, in conectar_google_sheets
+    cliente = gspread.service_account(
+        filename=CAMINHO_CREDENCIAL
+    )
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\venv\Lib\site-packages\gspread\auth.py", line 329, in service_account
+    creds = SACredentials.from_service_account_file(filename, scopes=scopes)
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\venv\Lib\site-packages\google\oauth2\service_account.py", line 271, in from_service_account_file
+    info, signer = _service_account_info.from_filename(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        filename, require=["client_email", "token_uri"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\venv\Lib\site-packages\google\auth\_service_account_info.py", line 78, in from_filename
+    with io.open(filename, "r", encoding="utf-8") as json_file:
+         ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: expected str, bytes or os.PathLike object, not NoneType
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 358, in main
+    enviar_email_erro(
+    ~~~~~~~~~~~~~~~~~^
+        erro,
+        ^^^^^
+        ultima_atualizacao
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 310, in enviar_email_erro
+    enviar_email(
+    ~~~~~~~~~~~~^
+        "🚨 ERRO - Monitoramento de Estoque Enjin",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        corpo
+        ^^^^^
+    )
+    ^
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\core\mailer.py", line 50, in enviar_email
+    servidor.login(
+    ~~~~~~~~~~~~~~^
+        email_user,
+        ^^^^^^^^^^^
+        email_pass
+        ^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\smtplib.py", line 762, in login
+    raise last_exception
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\smtplib.py", line 751, in login
+    (code, resp) = self.auth(
+                   ~~~~~~~~~^
+        authmethod, getattr(self, method_name),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        initial_response_ok=initial_response_ok)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\smtplib.py", line 669, in auth
+    raise SMTPAuthenticationError(code, resp)
+smtplib.SMTPAuthenticationError: (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials a1e0cc1a2514c-980673ca1fesm3412134241.10 - gsmtp')
+2026-09-02 22:04:23 | INFO | ========================================
+2026-09-02 22:04:23 | INFO | INICIANDO MONITORAMENTO DE ESTOQUE
+2026-09-02 22:04:23 | INFO | ========================================
+2026-09-02 22:04:25 | INFO | Google Sheets acessado com sucesso
+2026-09-02 22:04:25 | INFO | Lendo aba: WR-V
+2026-09-02 22:04:25 | INFO | Lendo aba: New HRV
+2026-09-02 22:04:26 | INFO | Lendo aba:  New City 2025
+2026-09-02 22:04:26 | INFO | Lendo aba: ZRV
+2026-09-02 22:04:26 | INFO | Lendo aba: CRV
+2026-09-02 22:04:27 | INFO | Lendo aba: Ofertas
+2026-09-02 22:04:27 | INFO | Lendo aba: CIVIC HYBRID
+2026-09-02 22:04:27 | INFO | Lendo aba: Banco Couro
+2026-09-02 22:04:28 | INFO | 158 itens analisados
+2026-09-02 22:04:28 | INFO | 34 itens abaixo do estoque mínimo
+2026-09-02 22:04:28 | WARNING | Última atualização do estoque não encontrada
+2026-09-02 22:04:28 | ERROR | Erro ao ler arquivo de estado
+Traceback (most recent call last):
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 224, in pode_enviar_email
+    estado = json.load(arquivo)
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-09-02 22:04:31 | ERROR | ERRO AO ENVIAR E-MAIL DE MONITORAMENTO
+Traceback (most recent call last):
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 442, in main
+    enviar_email(
+    ~~~~~~~~~~~~^
+        (
+        ^
+    ...<3 lines>...
+        corpo
+        ^^^^^
+    )
+    ^
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\core\mailer.py", line 50, in enviar_email
+    servidor.login(
+    ~~~~~~~~~~~~~~^
+        email_user,
+        ^^^^^^^^^^^
+        email_pass
+        ^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\smtplib.py", line 762, in login
+    raise last_exception
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\smtplib.py", line 751, in login
+    (code, resp) = self.auth(
+                   ~~~~~~~~~^
+        authmethod, getattr(self, method_name),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        initial_response_ok=initial_response_ok)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\smtplib.py", line 669, in auth
+    raise SMTPAuthenticationError(code, resp)
+smtplib.SMTPAuthenticationError: (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials ada2fe7eead31-78a1a251ca6sm3716560137.4 - gsmtp')
+2026-09-02 22:04:31 | INFO | MONITORAMENTO CONCLUÍDO
+2026-09-02 22:06:55 | INFO | ========================================
+2026-09-02 22:06:55 | INFO | INICIANDO MONITORAMENTO DE ESTOQUE
+2026-09-02 22:06:55 | INFO | ========================================
+2026-09-02 22:06:57 | INFO | Google Sheets acessado com sucesso
+2026-09-02 22:06:57 | INFO | Lendo aba: WR-V
+2026-09-02 22:06:57 | INFO | Lendo aba: New HRV
+2026-09-02 22:06:58 | INFO | Lendo aba:  New City 2025
+2026-09-02 22:06:58 | INFO | Lendo aba: ZRV
+2026-09-02 22:06:58 | INFO | Lendo aba: CRV
+2026-09-02 22:06:59 | INFO | Lendo aba: Ofertas
+2026-09-02 22:06:59 | INFO | Lendo aba: CIVIC HYBRID
+2026-09-02 22:06:59 | INFO | Lendo aba: Banco Couro
+2026-09-02 22:07:00 | INFO | 158 itens analisados
+2026-09-02 22:07:00 | INFO | 34 itens abaixo do estoque mínimo
+2026-09-02 22:07:00 | WARNING | Última atualização do estoque não encontrada
+2026-09-02 22:07:00 | ERROR | Erro ao ler arquivo de estado
+Traceback (most recent call last):
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 224, in pode_enviar_email
+    estado = json.load(arquivo)
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-09-02 22:07:04 | INFO | E-mail de monitoramento enviado
+2026-09-02 22:07:04 | INFO | MONITORAMENTO CONCLUÍDO
+2026-09-02 22:11:20 | INFO | ========================================
+2026-09-02 22:11:20 | INFO | INICIANDO MONITORAMENTO DE ESTOQUE
+2026-09-02 22:11:20 | INFO | ========================================
+2026-09-02 22:11:21 | INFO | Google Sheets acessado com sucesso
+2026-09-02 22:11:21 | INFO | Lendo aba: WR-V
+2026-09-02 22:11:22 | INFO | Lendo aba: New HRV
+2026-09-02 22:11:22 | INFO | Lendo aba:  New City 2025
+2026-09-02 22:11:22 | INFO | Lendo aba: ZRV
+2026-09-02 22:11:22 | INFO | Lendo aba: CRV
+2026-09-02 22:11:23 | INFO | Lendo aba: Ofertas
+2026-09-02 22:11:23 | INFO | Lendo aba: CIVIC HYBRID
+2026-09-02 22:11:23 | INFO | Lendo aba: Banco Couro
+2026-09-02 22:11:24 | INFO | 158 itens analisados
+2026-09-02 22:11:24 | INFO | 34 itens abaixo do estoque mínimo
+2026-09-02 22:11:24 | WARNING | Última atualização do estoque não encontrada
+2026-09-02 22:11:24 | INFO | Existem alertas, porém o último e-mail foi enviado há menos de 2 dias
+2026-09-02 22:11:24 | INFO | MONITORAMENTO CONCLUÍDO
+2026-09-02 22:13:00 | INFO | ========================================
+2026-09-02 22:13:00 | INFO | INICIANDO MONITORAMENTO DE ESTOQUE
+2026-09-02 22:13:00 | INFO | ========================================
+2026-09-02 22:13:02 | INFO | Google Sheets acessado com sucesso
+2026-09-02 22:13:02 | INFO | Lendo aba: WR-V
+2026-09-02 22:13:02 | INFO | Lendo aba: New HRV
+2026-09-02 22:13:03 | INFO | Lendo aba:  New City 2025
+2026-09-02 22:13:03 | INFO | Lendo aba: ZRV
+2026-09-02 22:13:03 | INFO | Lendo aba: CRV
+2026-09-02 22:13:04 | INFO | Lendo aba: Ofertas
+2026-09-02 22:13:04 | INFO | Lendo aba: CIVIC HYBRID
+2026-09-02 22:13:05 | INFO | Lendo aba: Banco Couro
+2026-09-02 22:13:05 | INFO | 158 itens analisados
+2026-09-02 22:13:05 | INFO | 34 itens abaixo do estoque mínimo
+2026-09-02 22:13:05 | WARNING | Última atualização do estoque não encontrada
+2026-09-02 22:13:05 | ERROR | Erro ao ler arquivo de estado
+Traceback (most recent call last):
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 200, in pode_enviar_email
+    estado = json.load(arquivo)
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-09-02 22:16:13 | INFO | ========================================
+2026-09-02 22:16:13 | INFO | INICIANDO MONITORAMENTO DE ESTOQUE
+2026-09-02 22:16:13 | INFO | ========================================
+2026-09-02 22:16:14 | INFO | Google Sheets acessado com sucesso
+2026-09-02 22:16:14 | INFO | Lendo aba: WR-V
+2026-09-02 22:16:15 | INFO | Lendo aba: New HRV
+2026-09-02 22:16:15 | INFO | Lendo aba:  New City 2025
+2026-09-02 22:16:15 | INFO | Lendo aba: ZRV
+2026-09-02 22:16:16 | INFO | Lendo aba: CRV
+2026-09-02 22:16:16 | INFO | Lendo aba: Ofertas
+2026-09-02 22:16:16 | INFO | Lendo aba: CIVIC HYBRID
+2026-09-02 22:16:17 | INFO | Lendo aba: Banco Couro
+2026-09-02 22:16:17 | INFO | 158 itens analisados
+2026-09-02 22:16:17 | INFO | 34 itens abaixo do estoque mínimo
+2026-09-02 22:16:17 | WARNING | Última atualização do estoque não encontrada
+2026-09-02 22:16:17 | ERROR | Erro ao ler arquivo de estado
+Traceback (most recent call last):
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 200, in pode_enviar_email
+    estado = json.load(arquivo)
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-09-02 22:31:11 | INFO | ========================================
+2026-09-02 22:31:11 | INFO | INICIANDO MONITORAMENTO DE ESTOQUE
+2026-09-02 22:31:11 | INFO | ========================================
+2026-09-02 22:31:12 | INFO | Google Sheets acessado com sucesso
+2026-09-02 22:31:13 | INFO | Lendo aba: WR-V
+2026-09-02 22:31:13 | INFO | Lendo aba: New HRV
+2026-09-02 22:31:13 | INFO | Lendo aba:  New City 2025
+2026-09-02 22:31:14 | INFO | Lendo aba: ZRV
+2026-09-02 22:31:14 | INFO | Lendo aba: CRV
+2026-09-02 22:31:14 | INFO | Lendo aba: Ofertas
+2026-09-02 22:31:15 | INFO | Lendo aba: CIVIC HYBRID
+2026-09-02 22:31:15 | INFO | Lendo aba: Banco Couro
+2026-09-02 22:31:15 | INFO | 158 itens analisados
+2026-09-02 22:31:15 | INFO | 34 itens abaixo do estoque mínimo
+2026-09-02 22:31:15 | WARNING | Última atualização do estoque não encontrada
+2026-09-02 22:31:15 | ERROR | Erro ao ler arquivo de estado
+Traceback (most recent call last):
+  File "E:\Projetos\Enjin\Enjin_Estoque_Acess_\monitor_estoque.py", line 193, in pode_enviar_email
+    estado = json.load(arquivo)
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Corcel\AppData\Local\Python\pythoncore-3.14-64\Lib\json\decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-09-02 22:31:19 | INFO | E-mail de monitoramento enviado
+2026-09-02 22:31:19 | INFO | MONITORAMENTO CONCLUÍDO

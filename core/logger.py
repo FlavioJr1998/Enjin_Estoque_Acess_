@@ -1,8 +1,29 @@
 import logging
+import os
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-)
+def criar_logger(nome, arquivo):
 
-logger = logging.getLogger("ENJIN_API_APOLLO")
+    os.makedirs("logs", exist_ok=True)
+
+    logger = logging.getLogger(nome)
+
+    if logger.handlers:
+        return logger
+
+    logger.setLevel(logging.INFO)
+
+    formatter = logging.Formatter(
+        "%(asctime)s | %(levelname)s | %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S"
+    )
+
+    handler = logging.FileHandler(
+        f"logs/{arquivo}",
+        encoding="utf-8"
+    )
+
+    handler.setFormatter(formatter)
+
+    logger.addHandler(handler)
+
+    return logger
